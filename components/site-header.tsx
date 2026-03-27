@@ -5,8 +5,10 @@ export function SiteHeader() {
     <header className="site-header">
       <div className="container site-header-inner">
         <Link href="/" className="brand">
-          <span className="brand-title">Jaundle</span>
-          <span className="brand-subtitle">Main Page</span>
+          <div className="brand-topline">
+            <span className="brand-title">Jaundle</span>
+            <img src="/gengar.gif" alt="" className="brand-gif" />
+          </div>
         </Link>
 
         <nav className="nav-links" aria-label="Primary navigation">

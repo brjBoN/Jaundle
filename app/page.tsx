@@ -13,7 +13,7 @@ export default async function HomePage() {
         <div className="container">
           <div className="hero-banner-card">
             <Image
-              src="/banner.png"
+              src="/Jaundle.gif"
               alt="Jaundle banner"
               fill
               priority
