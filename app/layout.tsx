@@ -4,8 +4,8 @@ import { SiteHeader } from '@/components/site-header';
 import { SiteFooter } from '@/components/site-footer';
 
 export const metadata: Metadata = {
-  title: 'Jaundle Main Page',
-  description: 'Main page for a daily web app game hub featuring a hidden-grid picture crossword.',
+  title: 'Jaundle',
+  description: 'Jaundice Center Base of Classified Operations.',
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
