@@ -1,4 +1,4 @@
-export type GameType = 'picture-crossword' | 'clue-ladder' | 'category-sprint';
+export type GameType = 'picture-crossword' | 'clue-ladder' | 'category-sprint' | 'daily-dozen';
 
 export interface ImageClue {
   id: string;
@@ -51,6 +51,7 @@ export interface DailyChallenge {
   pictureCrossword?: PictureCrosswordConfig;
   clueLadder?: ClueLadderChallenge;
   categorySprint?: CategorySprintChallenge;
+  dailyDozen?: DailyDozenConfig;
 }
 
 export interface GameDefinition {
@@ -88,5 +89,19 @@ export interface DailyChallengeRow {
   estimated_minutes: number;
   difficulty: DailyChallenge['difficulty'];
   type: GameType;
-  payload: PictureCrosswordConfig | ClueLadderChallenge | CategorySprintChallenge;
+  payload: PictureCrosswordConfig | ClueLadderChallenge | CategorySprintChallenge | DailyDozenConfig;
+}
+export interface DailyDozenQuestion {
+  id: string;
+  category: string;
+  prompt: string;
+  answers: string[];
+  hint?: string;
+}
+export interface DailyDozenConfig {
+  pointsPerQuestion?: number;
+  guessesAllowed?: number;
+  gameNumber?: number;
+  playersToday?: number;
+  questions: DailyDozenQuestion[];
 }

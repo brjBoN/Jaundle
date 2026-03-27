@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { DailyDozenGame } from '@/components/daily-dozen-game';
 import { PictureCrosswordGame } from '@/components/picture-crossword-game';
 import { PlaceholderGame } from '@/components/placeholder-game';
 import { getGameBySlug, getTodaysChallenge } from '@/lib/challenges';
@@ -12,6 +13,10 @@ export default async function GamePage({ params }: { params: Promise<{ slug: str
   if (!game || !challenge) {
     notFound();
   }
+
+  if (challenge.type === 'daily-dozen') {
+  return <DailyDozenGame slug={slug} challenge={challenge} />;
+}
 
   return (
     <>

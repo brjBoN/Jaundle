@@ -19,7 +19,7 @@ export default async function ArchivePage({ params }: { params: Promise<{ slug: 
         <div>
           <span className="kicker">Archive</span>
           <h1>{game.name}</h1>
-          <p className="section-copy">Published challenges pulled from Supabase when available, with a mock fallback while you finish setup.</p>
+          <p className="section-copy"></p>
         </div>
       </div>
 

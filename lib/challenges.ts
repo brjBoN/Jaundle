@@ -22,7 +22,11 @@ function mapRowToChallenge(row: DailyChallengeRow): DailyChallenge {
     return { ...baseChallenge, clueLadder: row.payload as DailyChallenge['clueLadder'] };
   }
 
-  return { ...baseChallenge, categorySprint: row.payload as DailyChallenge['categorySprint'] };
+  if (row.type === 'category-sprint') {
+    return { ...baseChallenge, categorySprint: row.payload as DailyChallenge['categorySprint'] };
+  }
+
+  return { ...baseChallenge, dailyDozen: row.payload as DailyChallenge['dailyDozen'] };
 }
 
 function getMockChallenge(slug: string, dateOverride?: string): DailyChallenge | null {

@@ -993,3 +993,563 @@ h1, h2, h3 {
     max-width: none;
   }
 }
+.daily-dozen-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 1.25rem;
+}
+
+.daily-dozen-score-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 1rem 0 1.25rem;
+}
+
+.daily-dozen-play-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.1fr);
+  gap: 1rem;
+}
+
+.daily-dozen-category-list,
+.daily-dozen-question-panel,
+.daily-dozen-answer-reveal {
+  padding: 1rem;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.daily-dozen-category-grid {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.daily-dozen-category-button {
+  width: 100%;
+  text-align: left;
+  display: grid;
+  gap: 0.55rem;
+  padding: 0.95rem;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.025);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.daily-dozen-category-button:hover {
+  border-color: var(--border);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.daily-dozen-category-button--selected {
+  border-color: rgba(88, 193, 255, 0.4);
+  background: rgba(88, 193, 255, 0.12);
+}
+
+.daily-dozen-category-button--solved {
+  border-color: rgba(82, 209, 157, 0.32);
+}
+
+.daily-dozen-category-button--revealed {
+  border-color: rgba(255, 209, 102, 0.28);
+}
+
+.daily-dozen-category-button span {
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.daily-dozen-category-topline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.daily-dozen-answer-form {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.daily-dozen-answer-reveal {
+  margin-top: 1rem;
+}
+
+.daily-dozen-answer-pill-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 0.75rem;
+}
+
+.daily-dozen-answer-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.45rem 0.8rem;
+  border-radius: 999px;
+  border: 1px solid rgba(82, 209, 157, 0.26);
+  background: rgba(82, 209, 157, 0.12);
+  color: var(--text);
+  font-weight: 700;
+}
+
+@media (max-width: 1200px) {
+  .daily-dozen-shell,
+  .daily-dozen-play-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 960px) {
+  .daily-dozen-score-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.daily-dozen-page {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  background: linear-gradient(180deg, #050614 0%, #0a0720 45%, #170421 78%, #22061d 100%);
+}
+
+.daily-dozen-background {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.daily-dozen-stars {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 8% 14%, rgba(255, 255, 255, 0.95) 0 1px, transparent 1.2px),
+    radial-gradient(circle at 23% 9%, rgba(91, 219, 255, 0.8) 0 1px, transparent 1.2px),
+    radial-gradient(circle at 41% 18%, rgba(255, 255, 255, 0.92) 0 1px, transparent 1.2px),
+    radial-gradient(circle at 58% 11%, rgba(255, 120, 233, 0.9) 0 1px, transparent 1.2px),
+    radial-gradient(circle at 74% 7%, rgba(255, 255, 255, 0.92) 0 1px, transparent 1.2px),
+    radial-gradient(circle at 91% 16%, rgba(91, 219, 255, 0.75) 0 1px, transparent 1.2px),
+    radial-gradient(circle at 12% 42%, rgba(255, 255, 255, 0.8) 0 1px, transparent 1.2px),
+    radial-gradient(circle at 29% 35%, rgba(255, 120, 233, 0.8) 0 1px, transparent 1.2px),
+    radial-gradient(circle at 50% 43%, rgba(255, 255, 255, 0.95) 0 1px, transparent 1.2px),
+    radial-gradient(circle at 68% 37%, rgba(255, 255, 255, 0.82) 0 1px, transparent 1.2px),
+    radial-gradient(circle at 83% 45%, rgba(255, 120, 233, 0.85) 0 1px, transparent 1.2px),
+    radial-gradient(circle at 95% 34%, rgba(255, 255, 255, 0.92) 0 1px, transparent 1.2px),
+    radial-gradient(circle at 7% 66%, rgba(255, 255, 255, 0.85) 0 1px, transparent 1.2px),
+    radial-gradient(circle at 18% 74%, rgba(91, 219, 255, 0.8) 0 1px, transparent 1.2px),
+    radial-gradient(circle at 36% 62%, rgba(255, 255, 255, 0.85) 0 1px, transparent 1.2px),
+    radial-gradient(circle at 57% 69%, rgba(255, 120, 233, 0.9) 0 1px, transparent 1.2px),
+    radial-gradient(circle at 78% 74%, rgba(255, 255, 255, 0.9) 0 1px, transparent 1.2px),
+    radial-gradient(circle at 92% 68%, rgba(91, 219, 255, 0.78) 0 1px, transparent 1.2px);
+  opacity: 0.95;
+}
+
+.daily-dozen-floor {
+  position: absolute;
+  left: -12%;
+  right: -12%;
+  bottom: -18vh;
+  height: 48vh;
+  background:
+    linear-gradient(to right, rgba(255, 0, 224, 0.46) 0 2px, transparent 2px) 0 0 / 10.5% 100%,
+    linear-gradient(to top, rgba(255, 0, 224, 0.42) 0 2px, transparent 2px) 0 0 / 100% 15%;
+  border-top: 2px solid rgba(255, 82, 236, 0.65);
+  transform: perspective(950px) rotateX(76deg);
+  transform-origin: center bottom;
+  opacity: 0.82;
+  box-shadow: 0 -25px 70px rgba(255, 0, 224, 0.12);
+}
+
+.daily-dozen-stage {
+  position: relative;
+  z-index: 1;
+  width: min(calc(100% - 2rem), 920px);
+  margin: 0 auto;
+  padding: 1.4rem 0 2.25rem;
+  display: grid;
+  justify-items: center;
+}
+
+.daily-dozen-wordmark-wrap {
+  justify-self: center;
+  margin-bottom: 1.2rem;
+}
+
+.daily-dozen-wordmark {
+  position: relative;
+  display: grid;
+  gap: 0.05rem;
+  padding: 1rem 1.6rem 0.9rem;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 900;
+  line-height: 0.88;
+  color: #fff7ff;
+  border: 3px solid #ff3edd;
+  clip-path: polygon(0 0, 83% 0, 100% 22%, 100% 100%, 0 100%);
+  background: linear-gradient(180deg, rgba(255, 62, 221, 0.24), rgba(255, 102, 66, 0.16));
+  box-shadow:
+    0 0 0 2px rgba(255, 113, 77, 0.42) inset,
+    0 0 22px rgba(255, 62, 221, 0.45),
+    0 0 50px rgba(255, 93, 150, 0.22);
+}
+
+.daily-dozen-wordmark::after {
+  content: '';
+  position: absolute;
+  inset: 0.4rem;
+  clip-path: polygon(0 0, 82% 0, 100% 22%, 100% 100%, 0 100%);
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  pointer-events: none;
+}
+
+.daily-dozen-wordmark__small {
+  font-size: clamp(1rem, 2.2vw, 1.5rem);
+  letter-spacing: 0.08em;
+}
+
+.daily-dozen-wordmark__large {
+  font-size: clamp(2.6rem, 6vw, 4.4rem);
+  letter-spacing: 0.02em;
+}
+
+.daily-dozen-board-shell {
+  width: min(100%, 700px);
+  margin-top: 0.2rem;
+}
+
+.daily-dozen-board-grid {
+  display: grid;
+  gap: 0;
+  border: 4px solid #ff00ef;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 2px rgba(255, 255, 255, 0.08) inset,
+    0 0 30px rgba(255, 0, 239, 0.24);
+}
+
+.daily-dozen-tile {
+  position: relative;
+  aspect-ratio: 1;
+  border: 0;
+  border-right: 2px solid #ff00ef;
+  border-bottom: 2px solid #ff00ef;
+  background: rgba(43, 0, 73, 0.92);
+  color: #fff;
+  padding: 1rem;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.16s ease, filter 0.16s ease, background 0.16s ease;
+}
+
+.daily-dozen-tile:nth-child(3n) {
+  border-right: 0;
+}
+
+.daily-dozen-tile:nth-last-child(-n + 3) {
+  border-bottom: 0;
+}
+
+.daily-dozen-tile:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+.daily-dozen-tile:disabled {
+  cursor: default;
+  opacity: 0.82;
+}
+
+.daily-dozen-tile--correct {
+  background: linear-gradient(180deg, rgba(0, 122, 79, 0.95), rgba(0, 87, 56, 0.94));
+}
+
+.daily-dozen-tile--incorrect {
+  background: linear-gradient(180deg, rgba(155, 22, 62, 0.95), rgba(111, 13, 45, 0.94));
+}
+
+.daily-dozen-tile__number {
+  position: absolute;
+  top: 0.7rem;
+  left: 0.8rem;
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.daily-dozen-tile__label {
+  max-width: 9ch;
+  font-size: clamp(1.3rem, 2.5vw, 2rem);
+  font-weight: 900;
+  line-height: 1.12;
+  text-transform: none;
+  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.32);
+}
+
+.daily-dozen-scorebar {
+  width: min(100%, 700px);
+  margin-top: 0.8rem;
+  display: grid;
+  grid-template-columns: 1.25fr 1fr 0.8fr 0.8fr;
+  gap: 0;
+  border: 4px solid #ff00ef;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 0 28px rgba(255, 0, 239, 0.2);
+}
+
+.daily-dozen-scorecard {
+  min-height: 92px;
+  padding: 0.7rem 1rem;
+  border-right: 2px solid #ff00ef;
+  background: rgba(26, 3, 57, 0.9);
+  display: grid;
+  place-items: center;
+  text-align: center;
+}
+
+.daily-dozen-scorecard:last-child {
+  border-right: 0;
+}
+
+.daily-dozen-scorecard__value {
+  font-size: clamp(2rem, 4.2vw, 3rem);
+  font-weight: 900;
+  line-height: 1;
+}
+
+.daily-dozen-scorecard__label {
+  margin-top: 0.2rem;
+  font-size: 0.95rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.daily-dozen-actions {
+  margin-top: 1.15rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.daily-dozen-pill-link {
+  min-width: 160px;
+  padding: 0.95rem 1.3rem;
+  border-radius: 999px;
+  border: 2px solid rgba(255, 255, 255, 0.92);
+  background: rgba(20, 8, 44, 0.72);
+  color: #ffffff;
+  font-weight: 800;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(9, 0, 31, 0.38);
+}
+
+.daily-dozen-helptext {
+  margin-top: 1rem;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.82);
+  font-weight: 700;
+}
+
+.daily-dozen-finish-panel {
+  margin-top: 1.15rem;
+  padding: 1rem 1.25rem;
+  border-radius: 16px;
+  border: 2px solid rgba(255, 0, 239, 0.7);
+  background: rgba(22, 7, 49, 0.86);
+  text-align: center;
+  box-shadow: 0 0 28px rgba(255, 0, 239, 0.16);
+}
+
+.daily-dozen-finish-panel__title {
+  font-size: 1.2rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.daily-dozen-finish-panel__score {
+  margin-top: 0.35rem;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.daily-dozen-finish-panel__grid {
+  margin-top: 0.7rem;
+  display: grid;
+  gap: 0.25rem;
+  justify-items: center;
+  font-size: 1.4rem;
+}
+
+.daily-dozen-finish-panel__actions {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.daily-dozen-finish-panel__button {
+  min-width: 170px;
+}
+
+.daily-dozen-pill-link--inline {
+  min-width: 170px;
+}
+
+.daily-dozen-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(4, 2, 13, 0.76);
+  backdrop-filter: blur(6px);
+}
+
+.daily-dozen-modal__card {
+  position: relative;
+  width: min(100%, 560px);
+  padding: 1.5rem;
+  border-radius: 22px;
+  border: 2px solid rgba(255, 0, 239, 0.72);
+  background: linear-gradient(180deg, rgba(26, 4, 58, 0.98), rgba(17, 6, 40, 0.98));
+  box-shadow: 0 18px 70px rgba(0, 0, 0, 0.42), 0 0 30px rgba(255, 0, 239, 0.18);
+}
+
+.daily-dozen-modal__close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.8rem;
+  width: 2.4rem;
+  height: 2.4rem;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-size: 1.65rem;
+  cursor: pointer;
+}
+
+.daily-dozen-modal__eyebrow {
+  color: #ff8cf1;
+  font-size: 0.84rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.daily-dozen-modal__title {
+  margin: 0.35rem 0 0;
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  line-height: 0.98;
+}
+
+.daily-dozen-modal__prompt {
+  margin: 0.85rem 0 0;
+  font-size: 1.15rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.94);
+}
+
+.daily-dozen-modal__hint {
+  margin: 0.8rem 0 0;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.daily-dozen-modal__form {
+  margin-top: 1.15rem;
+}
+
+.daily-dozen-modal__label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 800;
+}
+
+.daily-dozen-modal__input.answer-input {
+  margin-top: 0;
+  border-color: rgba(255, 0, 239, 0.36);
+  background: rgba(8, 5, 22, 0.9);
+}
+
+.daily-dozen-modal__actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.daily-dozen-modal__submit,
+.daily-dozen-modal__secondary {
+  flex: 1 1 180px;
+}
+
+.daily-dozen-modal__result {
+  margin-top: 1.15rem;
+  padding: 1rem;
+  border-radius: 16px;
+  display: grid;
+  gap: 0.35rem;
+  font-weight: 700;
+}
+
+.daily-dozen-modal__result--correct {
+  background: rgba(17, 112, 76, 0.22);
+  border: 1px solid rgba(82, 209, 157, 0.45);
+}
+
+.daily-dozen-modal__result--incorrect {
+  background: rgba(147, 27, 54, 0.22);
+  border: 1px solid rgba(255, 120, 156, 0.42);
+}
+
+.daily-dozen-modal__result-title {
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+@media (max-width: 860px) {
+  .daily-dozen-stage {
+    width: min(calc(100% - 1rem), 920px);
+    padding-top: 1rem;
+  }
+}
+
+@media (max-width: 680px) {
+  .daily-dozen-board-shell,
+  .daily-dozen-scorebar {
+    width: 100%;
+  }
+
+  .daily-dozen-tile__label {
+    font-size: clamp(1rem, 4vw, 1.35rem);
+    max-width: 8ch;
+  }
+
+  .daily-dozen-scorebar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .daily-dozen-scorecard:nth-child(2) {
+    border-right: 0;
+  }
+
+  .daily-dozen-scorecard:nth-child(-n + 2) {
+    border-bottom: 2px solid #ff00ef;
+  }
+
+  .daily-dozen-pill-link {
+    flex: 1 1 180px;
+  }
+}
