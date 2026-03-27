@@ -94,27 +94,6 @@ export default async function AdminPage() {
             </div>
           </form>
         </div>
-
-        <aside className="panel">
-          <h2>Files added for you</h2>
-          <div className="meta-list">
-            <div className="meta-item">
-              <span>.env.example</span>
-            </div>
-            <div className="meta-item">
-              <span>lib/supabase/server.ts</span>
-            </div>
-            <div className="meta-item">
-              <span>supabase/schema.sql</span>
-            </div>
-            <div className="meta-item">
-              <span>supabase/seed.sql</span>
-            </div>
-            <div className="meta-item">
-              <span>Archive routes under app/games/[slug]/archive</span>
-            </div>
-          </div>
-        </aside>
       </div>
     </div>
   );
