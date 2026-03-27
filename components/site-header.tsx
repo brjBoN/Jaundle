@@ -16,7 +16,7 @@ export function SiteHeader() {
             Today
           </Link>
           <Link className="nav-link" href="/games/daily-crossword/archive">
-            Archive
+            Archives
           </Link>
           <Link className="nav-link" href="/admin">
             Admin

@@ -14,21 +14,7 @@ export const gameDefinitions: GameDefinition[] = [
     shortDescription: 'Answer one prompt in each category. You control the categories, prompts, and accepted answers.',
     type: 'daily-dozen',
     emoji: '🎯',
-  },
-  {
-    slug: 'clue-ladder',
-    name: 'Clue Ladder',
-    shortDescription: 'Reveal clues one at a time and solve with as few as possible.',
-    type: 'clue-ladder',
-    emoji: '🪜',
-  },
-  {
-    slug: 'category-sprint',
-    name: 'Category Sprint',
-    shortDescription: 'Name as many valid answers in a category as you can.',
-    type: 'category-sprint',
-    emoji: '⚡',
-  },
+  }
 ];
 
 const fallbackDate = '2026-03-25';

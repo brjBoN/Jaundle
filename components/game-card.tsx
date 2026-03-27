@@ -11,7 +11,6 @@ export function GameCard({ game, challenge }: GameCardProps) {
     <article className="card">
       <div className="card-topline">
         <span className="badge badge--accent">{game.emoji} {game.name}</span>
-        <span className="badge">{challenge?.estimatedMinutes ?? 0} min</span>
       </div>
 
       <h3>{challenge?.title ?? game.name}</h3>
