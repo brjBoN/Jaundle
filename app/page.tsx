@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { GameCard } from '@/components/game-card';
 import { getGames, getTodaysChallenge } from '@/lib/challenges';
+export const dynamic = 'force-dynamic';
 
 export default async function HomePage() {
   const games = getGames();
