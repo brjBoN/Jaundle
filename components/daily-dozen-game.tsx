@@ -314,6 +314,22 @@ export function DailyDozenGame({ slug, challenge }: DailyDozenGameProps) {
   </div>
 ) : null}
 
+{selectedQuestion.audio ? (
+  <div className="daily-dozen-modal__audio-wrap">
+    {selectedQuestion.audio.label ? (
+      <p className="daily-dozen-modal__audio-label">{selectedQuestion.audio.label}</p>
+    ) : null}
+    <audio
+      controls
+      preload="none"
+      className="daily-dozen-modal__audio"
+      src={selectedQuestion.audio.src}
+    >
+      Your browser does not support the audio element.
+    </audio>
+  </div>
+) : null}
+
 <p className="daily-dozen-modal__prompt">{selectedQuestion.prompt}</p>
 {selectedQuestion.hint ? <p className="daily-dozen-modal__hint">Hint: {selectedQuestion.hint}</p> : null}
 

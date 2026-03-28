@@ -1569,3 +1569,23 @@ h1, h2, h3 {
   object-fit: contain;
   background: #111827;
 }
+
+.daily-dozen-modal__audio-wrap {
+  margin: 0 0 1rem;
+  padding: 0.85rem 1rem;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.daily-dozen-modal__audio-label {
+  margin: 0 0 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.daily-dozen-modal__audio {
+  display: block;
+  width: 100%;
+}

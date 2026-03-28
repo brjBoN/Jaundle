@@ -101,6 +101,10 @@ export interface DailyDozenQuestion {
     src: string;
     alt: string;
   };
+  audio?: {
+    src: string;
+    label?: string;
+  };
 }
 export interface DailyDozenConfig {
   pointsPerQuestion?: number;
