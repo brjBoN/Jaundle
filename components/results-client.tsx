@@ -72,13 +72,6 @@ export function ResultsClient({ slug, fallbackTitle, fallbackDate }: ResultsClie
           </div>
         )}
       </div>
-
-      <aside className="panel">
-        <h2>What this page is for</h2>
-        <p className="copy-muted">
-          Later, this is where you can show streak updates, category breakdowns, friend rankings, and a better share card.
-        </p>
-      </aside>
     </div>
   );
 }
