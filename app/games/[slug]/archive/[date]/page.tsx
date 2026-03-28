@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { PictureCrosswordGame } from '@/components/picture-crossword-game';
+import { DailyDozenGame } from '@/components/daily-dozen-game';
 import { PlaceholderGame } from '@/components/placeholder-game';
 import { getChallengeByDate, getGameBySlug } from '@/lib/challenges';
 import { formatDisplayDate } from '@/lib/date';
@@ -26,12 +27,14 @@ export default async function ArchiveChallengePage({ params }: { params: Promise
       </div>
 
       <div className="container game-layout game-layout--solo">
-        {challenge.type === 'picture-crossword' ? (
-          <PictureCrosswordGame slug={slug} challenge={challenge} />
-        ) : (
-          <PlaceholderGame slug={slug} challenge={challenge} />
-        )}
-      </div>
+  {challenge.type === 'picture-crossword' ? (
+    <PictureCrosswordGame slug={slug} challenge={challenge} />
+  ) : challenge.type === 'daily-dozen' ? (
+    <DailyDozenGame slug={slug} challenge={challenge} />
+  ) : (
+    <PlaceholderGame slug={slug} challenge={challenge} />
+  )}
+</div>
     </>
   );
 }
