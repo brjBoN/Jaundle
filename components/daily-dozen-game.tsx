@@ -301,10 +301,21 @@ export function DailyDozenGame({ slug, challenge }: DailyDozenGameProps) {
               Category {questions.findIndex((question) => question.id === selectedQuestion.id) + 1}
             </div>
             <h2 id="daily-dozen-question-title" className="daily-dozen-modal__title">
-              {selectedQuestion.category}
-            </h2>
-            <p className="daily-dozen-modal__prompt">{selectedQuestion.prompt}</p>
-            {selectedQuestion.hint ? <p className="daily-dozen-modal__hint">Hint: {selectedQuestion.hint}</p> : null}
+  {selectedQuestion.category}
+</h2>
+
+{selectedQuestion.image ? (
+  <div className="daily-dozen-modal__image-wrap">
+    <img
+      src={selectedQuestion.image.src}
+      alt={selectedQuestion.image.alt}
+      className="daily-dozen-modal__image"
+    />
+  </div>
+) : null}
+
+<p className="daily-dozen-modal__prompt">{selectedQuestion.prompt}</p>
+{selectedQuestion.hint ? <p className="daily-dozen-modal__hint">Hint: {selectedQuestion.hint}</p> : null}
 
             {(() => {
               const state = tileState[selectedQuestion.id];

@@ -97,6 +97,10 @@ export interface DailyDozenQuestion {
   prompt: string;
   answers: string[];
   hint?: string;
+  image?: {
+    src: string;
+    alt: string;
+  };
 }
 export interface DailyDozenConfig {
   pointsPerQuestion?: number;
