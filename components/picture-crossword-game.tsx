@@ -316,6 +316,7 @@ export function PictureCrosswordGame({ slug, challenge }: PictureCrosswordGamePr
                     const entryIdsAtCell = index.entryIdsByCell.get(key) ?? [];
                     const solvedIdsAtCell = solvedEntryIdsByCell.get(key) ?? [];
                     const hasRevealedCell = Boolean(letter);
+                    const isNumberedOnlyCell = typeof startNumber === 'number' && !hasRevealedCell;
                     const isStartCellForSelectedEntry = selectedEntry ? selectedEntry.row === row && selectedEntry.col === col : false;
                     const isPartOfSelectedSolvedEntry = Boolean(currentSolved) && activeWordCells.has(key) && hasRevealedCell;
                     const selectableEntryId = isStartCellForSelectedEntry
@@ -329,7 +330,7 @@ export function PictureCrosswordGame({ slug, challenge }: PictureCrosswordGamePr
                         className={[
                           'crossword-cell',
                           'crossword-cell--new',
-                          hasRevealedCell ? 'crossword-cell--revealed' : 'crossword-cell--hidden',
+                          hasRevealedCell ? 'crossword-cell--revealed' : isNumberedOnlyCell ? 'crossword-cell--numbered-only' : 'crossword-cell--hidden',
                           startNumber ? 'crossword-cell--start' : '',
                           selectableEntryId ? 'crossword-cell--clickable' : '',
                           isPartOfSelectedSolvedEntry ? 'crossword-cell--active' : '',
@@ -340,7 +341,15 @@ export function PictureCrosswordGame({ slug, challenge }: PictureCrosswordGamePr
                             handleSelectEntry(selectableEntryId);
                           }
                         }}
-                        aria-label={typeof startNumber === 'number' ? `Clue ${startNumber}` : hasRevealedCell ? `Revealed crossword cell ${letter}` : 'Hidden crossword cell'}
+                        aria-label={
+                          typeof startNumber === 'number'
+                            ? hasRevealedCell
+                              ? `Clue ${startNumber} revealed cell ${letter}`
+                              : `Clue ${startNumber} start cell`
+                            : hasRevealedCell
+                              ? `Revealed crossword cell ${letter}`
+                              : 'Hidden crossword cell'
+                        }
                       >
                         {typeof startNumber === 'number' ? (
                           <span className={[
@@ -360,7 +369,7 @@ export function PictureCrosswordGame({ slug, challenge }: PictureCrosswordGamePr
                   })}
                 </div>
 
-                {revealedCellMap.size === 0 ? <div className="crossword-board-note">Boxes stay hidden until you solve a clue. The numbered markers show where each answer begins.</div> : null}
+                {revealedCellMap.size === 0 ? <div className="crossword-board-note">Only numbered start boxes show at first. Letters appear after you solve a clue.</div> : null}
               </div>
             </section>
 

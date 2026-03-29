@@ -635,6 +635,19 @@ h1, h2, h3 {
   border-color: transparent;
 }
 
+.crossword-cell--new.crossword-cell--numbered-only {
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
+  color: var(--text);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+.crossword-cell--new.crossword-cell--numbered-only:hover {
+  border-color: rgba(88, 193, 255, 0.24);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(88, 193, 255, 0.08));
+}
+
 .crossword-cell--new.crossword-cell--clickable {
   cursor: pointer;
 }
@@ -674,6 +687,12 @@ h1, h2, h3 {
   color: var(--muted);
   border: 1px solid rgba(255, 255, 255, 0.14);
   z-index: 1;
+}
+
+.crossword-cell--numbered-only .crossword-start-number {
+  background: rgba(7, 17, 31, 0.72);
+  color: rgba(245, 247, 251, 0.92);
+  border-color: rgba(255, 255, 255, 0.18);
 }
 
 .crossword-start-number--selected {
