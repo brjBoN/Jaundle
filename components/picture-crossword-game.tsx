@@ -248,9 +248,24 @@ export function PictureCrosswordGame({ slug, challenge }: PictureCrosswordGamePr
       return;
     }
 
+    const currentVisibleCount = visibleImages[selectedEntry.id] ?? 1;
+    const nextVisibleCount = Math.min(selectedEntry.imageClues.length, currentVisibleCount + 1);
+    const didRevealAnotherImage = nextVisibleCount > currentVisibleCount;
+
+    if (didRevealAnotherImage) {
+      setVisibleImages((current) => ({
+        ...current,
+        [selectedEntry.id]: nextVisibleCount,
+      }));
+    }
+
+    const updatedScore = getVisibleScore(crosswordConfig, nextVisibleCount);
+
     setFeedback((current) => ({
       ...current,
-      [selectedEntry.id]: 'Not quite. Reveal another image or try a different guess.',
+      [selectedEntry.id]: didRevealAnotherImage
+        ? `Not quite. An additional image was revealed. This clue is now worth ${updatedScore} point${updatedScore === 1 ? '' : 's'}.`
+        : 'Not quite. No more images remain for this clue.',
     }));
   }
 

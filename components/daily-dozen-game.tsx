@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
-import type { DailyChallenge, DailyDozenQuestion, GameResult } from '@/types';
+import type { DailyChallenge, DailyDozenAnswerPart, DailyDozenQuestion, GameResult } from '@/types';
 
 interface DailyDozenGameProps {
   slug: string;
@@ -10,20 +10,37 @@ interface DailyDozenGameProps {
 }
 
 type TileStatus = 'open' | 'correct' | 'incorrect';
-type TileState = Record<string, { status: TileStatus; guess: string }>;
+type TileState = Record<string, { status: TileStatus; submissions: string[]; foundAnswers: string[] }>;
 type DraftState = Record<string, string>;
+type ProgressState = Record<string, { foundPartIds: string[]; foundAnswers: string[]; submissions: string[] }>;
+type ModalNotice = { kind: 'success' | 'error'; message: string };
 
 function normalizeAnswer(value: string): string {
   return value.replace(/[^a-z0-9]/gi, '').toLowerCase();
 }
 
-function isCorrectGuess(question: DailyDozenQuestion, guess: string): boolean {
-  const normalizedGuess = normalizeAnswer(guess);
-  if (!normalizedGuess) {
-    return false;
+function getQuestionAnswerParts(question: DailyDozenQuestion): DailyDozenAnswerPart[] {
+  const configuredParts = question.answerParts?.length
+    ? question.answerParts
+    : question.parts?.length
+      ? question.parts
+      : null;
+
+  if (configuredParts) {
+    return configuredParts.map((part, index) => ({
+      ...part,
+      id: part.id || `${question.id}-part-${index + 1}`,
+      displayAnswer: part.displayAnswer ?? part.answers[0] ?? `Answer ${index + 1}`,
+    }));
   }
 
-  return question.answers.some((answer) => normalizeAnswer(answer) === normalizedGuess);
+  return [
+    {
+      id: `${question.id}-single-answer`,
+      answers: question.answers ?? [],
+      displayAnswer: question.answers?.[0] ?? 'Answer',
+    },
+  ];
 }
 
 function formatElapsed(seconds: number): string {
@@ -79,13 +96,19 @@ export function DailyDozenGame({ slug, challenge }: DailyDozenGameProps) {
 
   const [tileState, setTileState] = useState<TileState>({});
   const [drafts, setDrafts] = useState<DraftState>(initialDrafts);
+  const [progressState, setProgressState] = useState<ProgressState>({});
   const [selectedQuestionId, setSelectedQuestionId] = useState(defaultSelectedQuestionId);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [isSaved, setIsSaved] = useState(false);
   const [copyStatus, setCopyStatus] = useState<'idle' | 'copied'>('idle');
+  const [modalNotice, setModalNotice] = useState<ModalNotice | null>(null);
 
   const selectedQuestion = questions.find((question) => question.id === selectedQuestionId) ?? null;
+  const selectedQuestionParts = selectedQuestion ? getQuestionAnswerParts(selectedQuestion) : [];
+  const selectedProgress = selectedQuestion
+    ? progressState[selectedQuestion.id] ?? { foundPartIds: [], foundAnswers: [], submissions: [] }
+    : { foundPartIds: [], foundAnswers: [], submissions: [] };
   const answeredQuestions = questions.filter((question) => {
     const status = tileState[question.id]?.status;
     return status === 'correct' || status === 'incorrect';
@@ -161,10 +184,12 @@ export function DailyDozenGame({ slug, challenge }: DailyDozenGameProps) {
   function openQuestion(questionId: string) {
     setSelectedQuestionId(questionId);
     setIsModalOpen(true);
+    setModalNotice(null);
   }
 
   function closeModal() {
     setIsModalOpen(false);
+    setModalNotice(null);
   }
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -181,19 +206,85 @@ export function DailyDozenGame({ slug, challenge }: DailyDozenGameProps) {
 
     const guess = (drafts[selectedQuestion.id] ?? '').trim();
     if (!guess) {
+      setModalNotice({ kind: 'error', message: 'Type an answer before submitting.' });
       return;
     }
 
-    const nextStatus: TileStatus = isCorrectGuess(selectedQuestion, guess) ? 'correct' : 'incorrect';
+    const answerParts = getQuestionAnswerParts(selectedQuestion);
+    const currentProgress = progressState[selectedQuestion.id] ?? {
+      foundPartIds: [],
+      foundAnswers: [],
+      submissions: [],
+    };
+    const normalizedGuess = normalizeAnswer(guess);
+    const matchedPart = answerParts.find(
+      (part) =>
+        !currentProgress.foundPartIds.includes(part.id) &&
+        part.answers.some((answer) => normalizeAnswer(answer) === normalizedGuess),
+    );
 
-    setTileState((current) => ({
+    if (!matchedPart) {
+      const incorrectSubmissions = [...currentProgress.submissions, guess];
+      setTileState((current) => ({
+        ...current,
+        [selectedQuestion.id]: {
+          status: 'incorrect',
+          submissions: incorrectSubmissions,
+          foundAnswers: currentProgress.foundAnswers,
+        },
+      }));
+      setProgressState((current) => {
+        const next = { ...current };
+        delete next[selectedQuestion.id];
+        return next;
+      });
+      closeModal();
+      return;
+    }
+
+    const displayAnswer = matchedPart.displayAnswer ?? matchedPart.answers[0] ?? guess;
+    const nextFoundPartIds = [...currentProgress.foundPartIds, matchedPart.id];
+    const nextFoundAnswers = [...currentProgress.foundAnswers, displayAnswer];
+    const nextSubmissions = [...currentProgress.submissions, guess];
+
+    if (nextFoundPartIds.length === answerParts.length) {
+      setTileState((current) => ({
+        ...current,
+        [selectedQuestion.id]: {
+          status: 'correct',
+          submissions: nextSubmissions,
+          foundAnswers: nextFoundAnswers,
+        },
+      }));
+      setProgressState((current) => {
+        const next = { ...current };
+        delete next[selectedQuestion.id];
+        return next;
+      });
+      setDrafts((current) => ({
+        ...current,
+        [selectedQuestion.id]: '',
+      }));
+      closeModal();
+      return;
+    }
+
+    setProgressState((current) => ({
       ...current,
       [selectedQuestion.id]: {
-        status: nextStatus,
-        guess,
+        foundPartIds: nextFoundPartIds,
+        foundAnswers: nextFoundAnswers,
+        submissions: nextSubmissions,
       },
     }));
-    closeModal();
+    setDrafts((current) => ({
+      ...current,
+      [selectedQuestion.id]: '',
+    }));
+    setModalNotice({
+      kind: 'success',
+      message: `${nextFoundPartIds.length} of ${answerParts.length} answers found. Enter the next one.`,
+    });
   }
 
   return (
@@ -301,48 +392,76 @@ export function DailyDozenGame({ slug, challenge }: DailyDozenGameProps) {
               Category {questions.findIndex((question) => question.id === selectedQuestion.id) + 1}
             </div>
             <h2 id="daily-dozen-question-title" className="daily-dozen-modal__title">
-  {selectedQuestion.category}
-</h2>
+              {selectedQuestion.category}
+            </h2>
 
-{selectedQuestion.image ? (
-  <div className="daily-dozen-modal__image-wrap">
-    <img
-      src={selectedQuestion.image.src}
-      alt={selectedQuestion.image.alt}
-      className="daily-dozen-modal__image"
-    />
-  </div>
-) : null}
+            {selectedQuestion.image ? (
+              <div className="daily-dozen-modal__image-wrap">
+                <img
+                  src={selectedQuestion.image.src}
+                  alt={selectedQuestion.image.alt}
+                  className="daily-dozen-modal__image"
+                />
+              </div>
+            ) : null}
 
-{selectedQuestion.audio ? (
-  <div className="daily-dozen-modal__audio-wrap">
-    {selectedQuestion.audio.label ? (
-      <p className="daily-dozen-modal__audio-label">{selectedQuestion.audio.label}</p>
-    ) : null}
-    <audio
-      controls
-      preload="none"
-      className="daily-dozen-modal__audio"
-      src={selectedQuestion.audio.src}
-    >
-      Your browser does not support the audio element.
-    </audio>
-  </div>
-) : null}
+            {selectedQuestion.audio ? (
+              <div className="daily-dozen-modal__audio-wrap">
+                {selectedQuestion.audio.label ? (
+                  <p className="daily-dozen-modal__audio-label">{selectedQuestion.audio.label}</p>
+                ) : null}
+                <audio
+                  controls
+                  preload="none"
+                  className="daily-dozen-modal__audio"
+                  src={selectedQuestion.audio.src}
+                >
+                  Your browser does not support the audio element.
+                </audio>
+              </div>
+            ) : null}
 
-<p className="daily-dozen-modal__prompt">{selectedQuestion.prompt}</p>
-{selectedQuestion.hint ? <p className="daily-dozen-modal__hint">Hint: {selectedQuestion.hint}</p> : null}
+            <p className="daily-dozen-modal__prompt">{selectedQuestion.prompt}</p>
+            {selectedQuestion.hint ? <p className="daily-dozen-modal__hint">Hint: {selectedQuestion.hint}</p> : null}
+
+            {selectedQuestionParts.length > 1 ? (
+              <div className="daily-dozen-modal__progress">
+                <div className="daily-dozen-modal__progress-copy">
+                  {selectedProgress.foundPartIds.length} of {selectedQuestionParts.length} required answers found.
+                  Submit answers one at a time. One wrong answer marks the whole question incorrect.
+                </div>
+                {selectedProgress.foundAnswers.length > 0 ? (
+                  <div className="daily-dozen-answer-pill-row">
+                    {selectedProgress.foundAnswers.map((answer) => (
+                      <span key={answer} className="daily-dozen-answer-pill">
+                        {answer}
+                      </span>
+                    ))}
+                  </div>
+                ) : null}
+              </div>
+            ) : null}
 
             {(() => {
               const state = tileState[selectedQuestion.id];
               const status = state?.status ?? 'open';
+              const acceptedAnswers = selectedQuestionParts.map((part) => part.displayAnswer ?? part.answers[0]).filter(Boolean);
 
               if (status === 'correct' || status === 'incorrect') {
                 return (
                   <div className={`daily-dozen-modal__result daily-dozen-modal__result--${status}`}>
                     <div className="daily-dozen-modal__result-title">{status === 'correct' ? 'Correct' : 'Incorrect'}</div>
-                    <div>Your answer: {state.guess}</div>
-                    <div>Accepted answer: {selectedQuestion.answers[0]}</div>
+                    <div>
+                      {state.submissions.length > 1 ? 'Your submissions: ' : 'Your submission: '}
+                      {state.submissions.join(', ')}
+                    </div>
+                    {status === 'incorrect' && state.foundAnswers.length > 0 ? (
+                      <div>Found before miss: {state.foundAnswers.join(', ')}</div>
+                    ) : null}
+                    <div>
+                      {acceptedAnswers.length > 1 ? 'Required answers: ' : 'Accepted answer: '}
+                      {acceptedAnswers.join(', ')}
+                    </div>
                   </div>
                 );
               }
@@ -350,7 +469,7 @@ export function DailyDozenGame({ slug, challenge }: DailyDozenGameProps) {
               return (
                 <form className="daily-dozen-modal__form" onSubmit={handleSubmit}>
                   <label htmlFor="daily-dozen-answer" className="daily-dozen-modal__label">
-                    Your answer
+                    {selectedQuestionParts.length > 1 ? 'Enter one answer' : 'Your answer'}
                   </label>
                   <input
                     id="daily-dozen-answer"
@@ -362,14 +481,20 @@ export function DailyDozenGame({ slug, challenge }: DailyDozenGameProps) {
                         [selectedQuestion.id]: event.target.value,
                       }))
                     }
-                    placeholder="Type your guess"
+                    placeholder={selectedQuestionParts.length > 1 ? 'Type one answer' : 'Type your guess'}
                     autoComplete="off"
                     autoFocus
                   />
 
+                  {modalNotice ? (
+                    <div className={`daily-dozen-modal__notice daily-dozen-modal__notice--${modalNotice.kind}`}>
+                      {modalNotice.message}
+                    </div>
+                  ) : null}
+
                   <div className="daily-dozen-modal__actions">
                     <button type="submit" className="button daily-dozen-modal__submit">
-                      Lock in answer
+                      Submit answer
                     </button>
                     <button type="button" className="button-secondary daily-dozen-modal__secondary" onClick={closeModal}>
                       Back to board

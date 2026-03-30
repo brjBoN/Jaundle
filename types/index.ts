@@ -91,11 +91,18 @@ export interface DailyChallengeRow {
   type: GameType;
   payload: PictureCrosswordConfig | ClueLadderChallenge | CategorySprintChallenge | DailyDozenConfig;
 }
+export interface DailyDozenAnswerPart {
+  id: string;
+  answers: string[];
+  displayAnswer?: string;
+}
+
 export interface DailyDozenQuestion {
   id: string;
   category: string;
   prompt: string;
-  answers: string[];
+  answers?: string[];
+  answerParts?: DailyDozenAnswerPart[];
   hint?: string;
   image?: {
     src: string;

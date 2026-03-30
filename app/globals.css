@@ -1608,3 +1608,33 @@ h1, h2, h3 {
   display: block;
   width: 100%;
 }
+
+.daily-dozen-modal__progress {
+  margin-top: 1rem;
+  padding: 0.9rem 1rem;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.daily-dozen-modal__progress-copy {
+  color: rgba(255, 255, 255, 0.82);
+  line-height: 1.5;
+}
+
+.daily-dozen-modal__notice {
+  margin-top: 0.9rem;
+  padding: 0.85rem 1rem;
+  border-radius: 14px;
+  font-weight: 700;
+}
+
+.daily-dozen-modal__notice--success {
+  border: 1px solid rgba(82, 209, 157, 0.45);
+  background: rgba(17, 112, 76, 0.22);
+}
+
+.daily-dozen-modal__notice--error {
+  border: 1px solid rgba(255, 120, 156, 0.42);
+  background: rgba(147, 27, 54, 0.22);
+}
