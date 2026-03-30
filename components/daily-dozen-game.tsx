@@ -22,9 +22,7 @@ function normalizeAnswer(value: string): string {
 function getQuestionAnswerParts(question: DailyDozenQuestion): DailyDozenAnswerPart[] {
   const configuredParts = question.answerParts?.length
     ? question.answerParts
-    : question.parts?.length
-      ? question.parts
-      : null;
+    : false
 
   if (configuredParts) {
     return configuredParts.map((part, index) => ({
